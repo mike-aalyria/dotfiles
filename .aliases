@@ -1,0 +1,20 @@
+# Shared aliases (used by both Bash and Zsh)
+
+# File system
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Git
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gd='git diff'
+
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Reload
+alias reload='source ~/.zshrc'
