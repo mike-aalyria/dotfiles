@@ -1,5 +1,8 @@
 # Shared aliases (used by both Bash and Zsh)
 
+# Reload
+alias reload='source ~/.zshrc'
+
 # File system
 alias ll='ls -alF'
 alias la='ls -A'
@@ -16,5 +19,8 @@ alias gd='git diff'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-# Reload
-alias reload='source ~/.zshrc'
+# GCP aliases
+alias gauth='gcloud auth login'
+alias gproj='gcloud config set project'
+alias ginfo='gcloud config list'
+alias gkctx='gcloud container clusters get-credentials'
