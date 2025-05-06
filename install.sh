@@ -48,14 +48,19 @@ install_packages() {
 create_symlinks() {
     echo "🔗 Creating symlinks..."
 
-    ln -sf "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
-    ln -sf "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
-    ln -sf "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
-    ln -sf "$DOTFILES_DIR/.profile" "$HOME/.profile"
-    ln -sf "$DOTFILES_DIR/.aliases" "$HOME/.aliases"
+    # Top-level dotfiles
+    for file in .bashrc .zshrc .gitconfig .profile .aliases; do
+        if [[ -f "$DOTFILES_DIR/$file" ]]; then
+            ln -sf "$DOTFILES_DIR/$file" "$HOME/$file"
+        fi
+    done
 
+    # Config directory
     mkdir -p "$CONFIG_DIR"
-    ln -sf "$DOTFILES_DIR/config/starship.toml" "$CONFIG_DIR/starship.toml"
+    for item in "$DOTFILES_DIR/.config/"*; do
+        name=$(basename "$item")
+        ln -sf "$item" "$CONFIG_DIR/$name"
+    done
 }
 
 setup_shell_launcher() {
