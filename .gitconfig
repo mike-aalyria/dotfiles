@@ -1,2 +1,5 @@
 [credential]
 	helper = store
+[user]
+	email = mike@aalyria.com
+	name = Mike Campanaro
