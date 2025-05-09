@@ -7,7 +7,7 @@ format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
 format = '\[[⏱ $duration]($style)\]'
 
 [gcloud]
-format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+format = '\[[$symbol$project]($style)\]'
 
 [git_branch]
 format = '\[[$symbol$branch]($style)\]'
@@ -17,6 +17,12 @@ format = '([\[$ahead_behind\]]($style))'
 
 [kubernetes]
 format = '\[[$symbol$context( \($namespace\))]($style)\]'
+symbol = '☸ '
+style = 'cyan bold'
+disabled = false
+
+context_aliases = { }
+detect_folders = ['.kube']
 
 [package]
 format = '\[[$symbol$version]($style)\]'

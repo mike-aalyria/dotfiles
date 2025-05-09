@@ -80,17 +80,7 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# Launch preferred shell (zsh) if installed and not already in use
-if [[ ! "$SHELL" =~ "zsh" && -x "$HOME/.local/bin/my-shell" ]]; then
+# Launch preferred shell (my-shell) if not already running zsh
+if [[ "$(ps -p $$ -o comm=)" != "zsh" && -x "$HOME/.local/bin/my-shell" ]]; then
     exec "$HOME/.local/bin/my-shell"
-fi
-
-# Launch preferred shell
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
-fi
-
-# Launch preferred shell
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
 fi
