@@ -24,16 +24,30 @@ install_packages() {
 
     ensure_local_bin
 
+    # Define your list of packages here
+    COMMON_PACKAGES=(zsh curl tldr micro)
+    BREW_PACKAGES=(starship)
+    APT_PACKAGES=(starship)  # If you want to install starship via apt, or leave it to curl as in your script
+
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if ! command_exists brew; then
             echo "Installing Homebrew..."
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
-        brew install zsh starship
+        for pkg in "${COMMON_PACKAGES[@]}" "${BREW_PACKAGES[@]}"; do
+            if ! brew list --formula | grep -q "^$pkg\$"; then
+                brew install "$pkg"
+            fi
+        done
     elif command_exists apt-get; then
         sudo apt-get update
-        sudo apt-get install -y zsh curl
+        for pkg in "${COMMON_PACKAGES[@]}"; do
+            if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+                sudo apt-get install -y "$pkg"
+            fi
+        done
 
+        # Starship install (if not using apt)
         if ! command_exists starship; then
             curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir="$LOCAL_BIN" -y
         fi

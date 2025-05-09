@@ -84,3 +84,22 @@ fi
 if [[ "$(ps -p $$ -o comm=)" != "zsh" && -x "$HOME/.local/bin/my-shell" ]]; then
     exec "$HOME/.local/bin/my-shell"
 fi
+# Launch preferred shell
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
+
+# Launch preferred shell
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
+
+# Launch preferred shell
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
+
+# Launch preferred shell
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
