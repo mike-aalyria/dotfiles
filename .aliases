@@ -18,34 +18,7 @@ alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
 alias gd='git diff'
-
-# Git config aliases (these will be added to .gitconfig)
-GIT_ALIASES="
-[alias]
-	# View abbreviated SHA, description, and history graph
-	l = log --pretty=oneline -n 20 --graph --abbrev-commit
-	# View the current working tree status using the short format
-	s = status -s
-	# List all branches
-	branches = branch -a
-	# Remove branches that have already been merged with main
-	cleanup = !git branch --merged | grep -v '\\\\*\\\\|main\\\\|master' | xargs -n 1 git branch -d
-	# Show verbose output about tags, branches or remotes
-	tags = tag -l
-	remotes = remote -v
-	# Amend the currently staged files to the latest commit
-	amend = commit --amend --reuse-message=HEAD
-	# Interactive rebase with the given number of latest commits
-	reb = \"!r() { git rebase -i HEAD~\$1; }; r\"
-	# Find branches containing commit
-	fb = \"!f() { git branch -a --contains \$1; }; f\"
-	# Find tags containing commit
-	ft = \"!f() { git describe --always --contains \$1; }; f\"
-	# Find commits by source code
-	fc = \"!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S\$1; }; f\"
-	# Show the user email for the current repository
-	whoami = config user.email
-"
+alias gw='git switch'
 
 # GCP aliases
 alias gauth='gcloud auth login'
