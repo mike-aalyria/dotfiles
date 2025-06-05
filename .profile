@@ -8,6 +8,13 @@ if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
 fi
 export PATH
 
-export EDITOR=micro
-export VISUAL=micro
-export LANG=en_US.UTF-8 
+export EDITOR=nano
+
+# Switch to zsh if available and not already running it
+if [[ "$(ps -p $$ -o comm=)" != "zsh" ]] && command -v zsh >/dev/null 2>&1; then
+    if [[ -x "$HOME/.local/bin/my-shell" ]]; then
+        exec "$HOME/.local/bin/my-shell"
+    else
+        exec zsh
+    fi
+fi

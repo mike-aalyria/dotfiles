@@ -25,9 +25,9 @@ install_packages() {
     ensure_local_bin
 
     # Define your list of packages here
-    COMMON_PACKAGES=(zsh curl tldr micro)
-    BREW_PACKAGES=(starship)
-    APT_PACKAGES=(starship)  # If you want to install starship via apt, or leave it to curl as in your script
+    COMMON_PACKAGES=(zsh curl tldr)
+    BREW_PACKAGES=()
+    APT_PACKAGES=()
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if ! command_exists brew; then
@@ -46,11 +46,6 @@ install_packages() {
                 sudo apt-get install -y "$pkg"
             fi
         done
-
-        # Starship install (if not using apt)
-        if ! command_exists starship; then
-            curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir="$LOCAL_BIN" -y
-        fi
     fi
 
     if [[ ! -d "$HOME/.oh-my-zsh" ]]; then

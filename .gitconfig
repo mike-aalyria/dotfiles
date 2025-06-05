@@ -3,3 +3,71 @@
 [user]
 	email = mike@aalyria.com
 	name = Mike Campanaro
+[init]
+	defaultBranch = main
+
+[core]
+	# Prevent showing files whose names contain non-ASCII symbols as unversioned
+	precomposeunicode = true
+	# Speed up commands involving untracked files such as `git status`
+	untrackedCache = true
+	# Use custom `.gitignore` and `.gitattributes`
+	excludesfile = ~/.gitignore
+	attributesfile = ~/.gitattributes
+	# Treat spaces before tabs and all kinds of trailing whitespace as an error
+	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	# Make `git rebase` safer on macOS
+	trustctime = false
+	# Use VSCode as default editor if available, fall back to nano
+	editor = "which code >/dev/null 2>&1 && code --wait || nano"
+
+[color]
+	# Use colors in Git commands that are capable of colored output
+	ui = auto
+
+[diff]
+	# Detect copies as well as renames
+	renames = copies
+	# Use better, descriptive prefixes for diff markers
+	mnemonicPrefix = true
+	# Show blocks of moved text differently than adds/deletes
+	colorMoved = zebra
+
+[push]
+	# Make `git push` push relevant annotated tags when pushing branches out
+	followTags = true
+	# Push the current branch to update a branch with the same name on the receiving end
+	default = current
+
+[pull]
+	# Rebase branches on top of fetched branches
+	rebase = true
+
+[fetch]
+	# Remove remote-tracking branches that no longer exist on the remote
+	prune = true
+	# Remove remote tags that no longer exist on the remote
+	pruneTags = true
+
+[rebase]
+	# Automatically stash changes before rebasing and unstash afterwards
+	autoStash = true
+
+[merge]
+	# Include summaries of merged commits in newly created merge commit messages
+	log = true
+	# Use histogram diff algorithm for better diffs
+	conflictStyle = zdiff3
+
+[help]
+	# Automatically correct and execute mistyped commands
+	autocorrect = 1
+
+[alias]
+	# View abbreviated SHA, description, and history graph
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+	# View the current working tree status using the short format
+	s = status -s
+	branches = branch -a	# Remove branches that have already been merged with main
+	git-cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs -n 1 git branch -d"
+

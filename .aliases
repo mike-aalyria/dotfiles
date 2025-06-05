@@ -1,7 +1,7 @@
 # Shared aliases (used by both Bash and Zsh)
 
-# Reload
-alias reload='source ~/.zshrc'
+# Reload shell configuration
+alias reload='if [ -n "$ZSH_VERSION" ]; then source ~/.zshrc; elif [ -n "$BASH_VERSION" ]; then source ~/.bashrc; fi'
 
 # File system
 alias ll='ls -alF'
@@ -24,3 +24,6 @@ alias gauth='gcloud auth login'
 alias gproj='gcloud config set project'
 alias ginfo='gcloud config list'
 alias gkctx='gcloud container clusters get-credentials'
+
+# Terraform aliases
+alias bg='../../tools/break-glass.sh terraform'

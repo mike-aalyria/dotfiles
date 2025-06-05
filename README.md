@@ -20,7 +20,7 @@ cd ~/.dotfiles
 ## What's Included
 
 Minimal but complete setup for remote development:
-- Zsh with Oh My Zsh + Starship prompt
+- Zsh with Oh My Zsh and custom prompt
 - Bash fallback configuration
 - Git config with useful aliases
 - Shared aliases for both shells
@@ -36,9 +36,7 @@ Minimal but complete setup for remote development:
 ├── .profile          → Login shell config
 ├── .aliases          → Shared Bash + Zsh aliases
 ├── install.sh        → Main setup + symlink script
-├── bootstrap.sh      → One-line bootstrap installer
-└── config/
-    └── starship.toml → Starship prompt config
+└── bootstrap.sh      → One-line bootstrap installer
 ```
 
 ## 🔗 Setup summary
@@ -50,13 +48,11 @@ Minimal but complete setup for remote development:
 | ~/.gitconfig | Git aliases + identity |
 | ~/.profile | Login shell config |
 | ~/.aliases | Shared aliases |
-| ~/.config/starship.toml | Starship prompt config |
 | ~/.local/bin/my-shell | Shell launcher fallback |
 
 ## ⚙ Included tools
 
 - Oh My Zsh — Zsh plugin manager
-- Starship — cross-shell prompt
 - Zsh — main shell
 - Bash — fallback shell
 
