@@ -58,7 +58,8 @@ create_symlinks() {
     echo "🔗 Creating symlinks..."
 
     # Top-level dotfiles
-    for file in .bashrc .zshrc .gitconfig .profile .aliases; do
+    FILES=".profile .zprofile .zshrc .bashrc .aliases .paths"
+    for file in $FILES; do
         if [[ -f "$DOTFILES_DIR/$file" ]]; then
             ln -sf "$DOTFILES_DIR/$file" "$HOME/$file"
         fi
@@ -95,6 +96,7 @@ EOF
 install_packages || true
 create_symlinks
 setup_shell_launcher
+source ~/.profile
 
 echo -e "\n✅ Dotfiles setup complete!"
-echo "➡️ Run 'source ~/.bashrc' or open a new terminal to start using your setup."
+

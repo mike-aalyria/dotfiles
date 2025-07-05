@@ -1,12 +1,13 @@
 # Shared aliases (used by both Bash and Zsh)
 
-# Reload shell configuration
-alias reload='if [ -n "$ZSH_VERSION" ]; then source ~/.zshrc; elif [ -n "$BASH_VERSION" ]; then source ~/.bashrc; fi'
+# Reload shell configuration (loads profile for env/paths, then shell-specific settings)
+alias reload='OLD_PATH="$PATH"; source ~/.profile; if [ -n "$ZSH_VERSION" ]; then source ~/.zshrc; elif [ -n "$BASH_VERSION" ]; then source ~/.bashrc; fi; echo "PATH changes:"; echo "Old: $OLD_PATH"; echo "New: $PATH"'
 
 # File system
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias path='echo $PATH | tr ":" "\n" | sed "s/^/- /"'
 
 # Navigation
 alias ..='cd ..'

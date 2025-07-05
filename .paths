@@ -1,0 +1,14 @@
+# Paths to be added to $PATH
+# Format: One path per line, use $HOME instead of hardcoding home directory
+# Lines starting with # are ignored
+# Empty lines are ignored
+
+# Local binaries
+$HOME/.local/bin
+$HOME/.local/bin/utils
+
+# Aalyria tools
+$HOME/aalyria/minkowski/experimental/users/mcampanaro/tools
+
+# Add your paths below:
+# $HOME/your/custom/path 

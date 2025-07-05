@@ -6,10 +6,12 @@ case $- in
       *) return;;
 esac
 
-# Basic history
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Enhanced history settings
+HISTSIZE=10000
+HISTFILESIZE=20000
 shopt -s histappend
+shopt -s cmdhist
+shopt -s lithist
 
 # Check window size after commands
 shopt -s checkwinsize
@@ -28,6 +30,20 @@ if ! shopt -oq posix; then
         . /usr/share/bash-completion/bash_completion
     fi
 fi
+
+# Add custom PATH
+export PATH="$HOME/aalyria/minkowski/experimental/users/mcampanaro/tools:$PATH"
+
+# Launch preferred shell (only once)
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
+
+# Launch preferred shell
+if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
+    exec "/home/mike_aalyria_com/.local/bin/my-shell"
+fi
+
 # Launch preferred shell
 if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
     exec "/home/mike_aalyria_com/.local/bin/my-shell"

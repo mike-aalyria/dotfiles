@@ -1,11 +1,5 @@
 # ~/.zshrc – primary shell configuration
 
-# Environment variables
-export PATH="$HOME/.local/bin:$PATH"
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-export EDITOR="nano"
-
 # Terminal configuration
 case "$TERM" in
     xterm-256color|screen-256color|xterm-color|vscode*) 

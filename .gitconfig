@@ -68,7 +68,12 @@
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 	# View the current working tree status using the short format
 	s = status -s
-	branches = branch -a	
-	# Remove branches that have already been merged with main
-	git-cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs -n 1 git branch -d"
+  	mybranches = !git for-each-ref --color=always --sort=-committerdate --format='%(color:green)%(refname:short) %(color:yellow)%(committerdate:short) %(color:blue)%(subject)%(color:reset)' refs/heads/
+  	# Remove branches that have already been merged with main
+	git-cleanup = "!f() { \
+		git fetch --prune && \
+		git branch --merged | grep -vE '\\*|main|master' | xargs -r git branch -d && \
+		git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | \
+		grep '\\[gone\\]' | cut -d' ' -f1 | xargs -r git branch -d; \
+	}; f"
 
