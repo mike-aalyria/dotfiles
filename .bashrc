@@ -1,4 +1,4 @@
-# ~/.bashrc – minimal fallback configuration
+# ~/.bashrc – primary shell configuration
 
 # Only run if interactive
 case $- in
@@ -6,50 +6,58 @@ case $- in
       *) return;;
 esac
 
-# Enhanced history settings
-HISTSIZE=10000
-HISTFILESIZE=20000
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# History settings
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=100000
+HISTFILESIZE=200000
+HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 shopt -s histappend
-shopt -s cmdhist
-shopt -s lithist
-
-# Check window size after commands
 shopt -s checkwinsize
+shopt -s cmdhist
 
-# Basic prompt
-PS1='\u@\h:\w\$ '
+# Environment
+export EDITOR='nano'
+export VISUAL='nano'
+export LESS='-R -i -M -S -x4'
+export LESSHISTFILE='-'
 
-# Load aliases if available
+# Colors
+if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    RED='\[\033[0;31m\]'
+    GREEN='\[\033[0;32m\]'
+    YELLOW='\[\033[1;33m\]'
+    BLUE='\[\033[0;34m\]'
+    RESET='\[\033[0m\]'
+else
+    RED='' GREEN='' YELLOW='' BLUE='' RESET=''
+fi
+
+# Git prompt function
+git_branch() {
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# Prompt
+PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${YELLOW}\$(git_branch)${RESET}\$ "
+
+# Load aliases
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
-# Basic completion
+# Enable bash completion
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
         . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
     fi
 fi
 
-# Add custom PATH
-export PATH="$HOME/aalyria/minkowski/experimental/users/mcampanaro/tools:$PATH"
-
-# Launch preferred shell (only once)
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
-fi
-
-# Launch preferred shell
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
-fi
-
-# Launch preferred shell
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
-fi
-
-# Launch preferred shell
-if [[ ! "$SHELL" =~ "zsh" && -x "/home/mike_aalyria_com/.local/bin/my-shell" ]]; then
-    exec "/home/mike_aalyria_com/.local/bin/my-shell"
-fi
+# Source local customizations
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local

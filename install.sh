@@ -4,7 +4,6 @@ set -e
 
 # === CONFIG ===
 DOTFILES_DIR="$HOME/.dotfiles"
-CONFIG_DIR="$HOME/.config"
 LOCAL_BIN="$HOME/.local/bin"
 
 # === HELPER FUNCTIONS ===
@@ -12,91 +11,111 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-ensure_local_bin() {
-    mkdir -p "$LOCAL_BIN"
-    if [[ ":$PATH:" != *":$LOCAL_BIN:"* ]]; then
-        export PATH="$LOCAL_BIN:$PATH"
+read_packages() {
+    local packages_file="$1"
+    local packages=()
+    
+    if [ -f "$packages_file" ]; then
+        while IFS= read -r line || [ -n "$line" ]; do
+            # Skip comments and empty lines
+            [[ "$line" =~ ^[[:space:]]*# ]] && continue
+            [[ -z "${line// }" ]] && continue
+            
+            # Add package to array
+            packages+=("$line")
+        done < "$packages_file"
     fi
+    
+    printf '%s\n' "${packages[@]}"
 }
 
 install_packages() {
-    echo "📦 Installing required packages..."
-
-    ensure_local_bin
-
-    # Define your list of packages here
-    COMMON_PACKAGES=(zsh curl tldr)
-    BREW_PACKAGES=()
-    APT_PACKAGES=()
-
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        if ! command_exists brew; then
-            echo "Installing Homebrew..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
-        for pkg in "${COMMON_PACKAGES[@]}" "${BREW_PACKAGES[@]}"; do
-            if ! brew list --formula | grep -q "^$pkg\$"; then
-                brew install "$pkg"
-            fi
-        done
-    elif command_exists apt-get; then
+    echo "📦 Installing packages..."
+    
+    if command_exists apt-get; then
+        echo "Using apt package manager..."
         sudo apt-get update
-        for pkg in "${COMMON_PACKAGES[@]}"; do
-            if ! dpkg -s "$pkg" >/dev/null 2>&1; then
-                sudo apt-get install -y "$pkg"
+        
+        # Read packages from .packages file
+        PACKAGES_FILE="$DOTFILES_DIR/.packages"
+        if [ -f "$PACKAGES_FILE" ]; then
+            echo "Reading packages from $PACKAGES_FILE"
+            PACKAGES=($(read_packages "$PACKAGES_FILE"))
+            
+            if [ ${#PACKAGES[@]} -eq 0 ]; then
+                echo "⚠️  No packages found in $PACKAGES_FILE"
+                return
             fi
-        done
-    fi
-
-    if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-        echo "Installing Oh My Zsh..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+            
+            echo "Found ${#PACKAGES[@]} packages to install..."
+            for pkg in "${PACKAGES[@]}"; do
+                if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+                    echo "Installing $pkg..."
+                    if sudo apt-get install -y "$pkg" 2>/dev/null; then
+                        echo "✅ $pkg installed successfully"
+                    else
+                        echo "❌ Failed to install $pkg"
+                    fi
+                else
+                    echo "✅ $pkg already installed"
+                fi
+            done
+        else
+            echo "⚠️  Package file not found: $PACKAGES_FILE"
+            echo "Creating default package file..."
+            
+            # Create default .packages file if it doesn't exist
+            cat > "$PACKAGES_FILE" << 'EOF'
+# Default packages
+bash
+bash-completion
+curl
+git
+nano
+EOF
+            echo "📝 Edit $PACKAGES_FILE to customize package list"
+        fi
+    else
+        echo "⚠️  apt not found. Please install packages manually from .packages file"
     fi
 }
 
 create_symlinks() {
     echo "🔗 Creating symlinks..."
-
-    # Top-level dotfiles
-    FILES=".profile .zprofile .zshrc .bashrc .aliases .paths"
+    
+    # Ensure dotfiles directory exists
+    if [ ! -d "$DOTFILES_DIR" ]; then
+        echo "❌ Dotfiles directory not found: $DOTFILES_DIR"
+        exit 1
+    fi
+    
+    # Create symlinks for dotfiles
+    FILES=".profile .bashrc .aliases .paths .packages"
     for file in $FILES; do
-        if [[ -f "$DOTFILES_DIR/$file" ]]; then
+        if [ -f "$DOTFILES_DIR/$file" ]; then
+            echo "Symlinking $file"
             ln -sf "$DOTFILES_DIR/$file" "$HOME/$file"
+        else
+            echo "⚠️  File not found: $DOTFILES_DIR/$file"
         fi
     done
-
-    # Config directory
-    mkdir -p "$CONFIG_DIR"
-    for item in "$DOTFILES_DIR/.config/"*; do
-        name=$(basename "$item")
-        ln -sf "$item" "$CONFIG_DIR/$name"
-    done
 }
 
-setup_shell_launcher() {
-    echo "🐚 Setting up shell launcher..."
-    SHELL_LAUNCHER="$LOCAL_BIN/my-shell"
-    cat > "$SHELL_LAUNCHER" << 'EOF'
-#!/bin/bash
-if command -v zsh >/dev/null 2>&1; then
-    exec zsh
-else
-    echo "Zsh not found, falling back to current shell"
-    exec "$SHELL"
-fi
-EOF
-    chmod +x "$SHELL_LAUNCHER"
-
-    if ! grep -q "exec $SHELL_LAUNCHER" "$HOME/.bashrc"; then
-        echo -e "\n# Launch preferred shell\nif [[ ! \"\$SHELL\" =~ \"zsh\" && -x \"$SHELL_LAUNCHER\" ]]; then\n    exec \"$SHELL_LAUNCHER\"\nfi" >> "$HOME/.bashrc"
-    fi
+setup_directories() {
+    echo "📁 Setting up directories..."
+    mkdir -p "$LOCAL_BIN"
+    mkdir -p "$HOME/.config"
 }
 
-# === MAIN RUN ===
-install_packages || true
+# === MAIN EXECUTION ===
+echo "🚀 Starting dotfiles installation..."
+
+install_packages
+setup_directories 
 create_symlinks
-setup_shell_launcher
-source ~/.profile
 
-echo -e "\n✅ Dotfiles setup complete!"
+echo ""
+echo "✅ Dotfiles setup complete!"
+echo "📝 Run 'source ~/.bashrc' or open a new terminal to apply changes"
+echo "📦 To modify packages, edit ~/.packages and re-run install.sh"
 

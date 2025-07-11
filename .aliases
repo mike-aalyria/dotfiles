@@ -1,31 +1,128 @@
-# Shared aliases (used by both Bash and Zsh)
+# Shared aliases for bash
 
-# Reload shell configuration (loads profile for env/paths, then shell-specific settings)
-alias reload='OLD_PATH="$PATH"; source ~/.profile; if [ -n "$ZSH_VERSION" ]; then source ~/.zshrc; elif [ -n "$BASH_VERSION" ]; then source ~/.bashrc; fi; echo "PATH changes:"; echo "Old: $OLD_PATH"; echo "New: $PATH"'
-
-# File system
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+# === SHELL MANAGEMENT ===
+alias reload='source ~/.bashrc'
 alias path='echo $PATH | tr ":" "\n" | sed "s/^/- /"'
 
-# Navigation
+# === IMPROVED COMMAND REPLACEMENTS ===
+# Modern ls with exa (fallback to ls if exa not available)
+if command -v exa >/dev/null 2>&1; then
+    alias ls='exa --color=auto --group-directories-first'
+    alias ll='exa -alF --group-directories-first'
+    alias la='exa -a --group-directories-first'
+    alias l='exa -F --group-directories-first'
+    alias lsa='exa -lah --group-directories-first'
+    alias lt='exa -l --sort=modified --group-directories-first'
+    alias tree='exa --tree'
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+    alias lsa='ls -lah'
+    alias lt='ls -ltr'
+fi
+
+# Better cat with bat (fallback to cat)
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat --paging=never'
+    alias less='bat'
+    alias more='bat'
+fi
+
+# Better grep with ripgrep (keep original grep available)
+if command -v rg >/dev/null 2>&1; then
+    alias rg='rg --color=auto'
+    alias grep='rg --color=auto'
+fi
+
+# Better find with fd (keep original find available)
+if command -v fdfind >/dev/null 2>&1; then
+    alias fd='fdfind'
+    alias find='fdfind'
+elif command -v fd >/dev/null 2>&1; then
+    alias find='fd'
+fi
+
+# === ENHANCED COMMANDS ===
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# === NAVIGATION ===
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
+alias ~='cd ~'
+alias -- -='cd -'
 
-# Git shell aliases
+# === SAFETY ===
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias mkdir='mkdir -p'
+
+# === SHORTCUTS ===
+alias h='history'
+alias hg='history | grep'
+alias c='clear'
+alias e='$EDITOR'
+
+# === SYSTEM INFO ===
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+alias ports='netstat -tulanp'
+
+# === FUZZY FINDER (if available) ===
+if command -v fzf >/dev/null 2>&1; then
+    # Fuzzy find files and edit
+    alias fzf-edit='$EDITOR $(fzf)'
+    alias fe='$EDITOR $(fzf)'
+    
+    # Fuzzy find in history
+    alias fzf-history='history | fzf'
+    alias fh='history | fzf'
+fi
+
+# === GIT ===
+alias g='git'
 alias gs='git status'
 alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
+alias gl='git pull'
 alias gd='git diff'
 alias gw='git switch'
+alias glog='git log --oneline --graph --decorate --all'
 
-# GCP aliases
+# === PACKAGE MANAGEMENT ===
+alias install='sudo apt install'
+alias update='sudo apt update && sudo apt upgrade'
+alias search='apt search'
+
+# === GCP/WORK SPECIFIC ===
 alias gauth='gcloud auth login'
 alias gproj='gcloud config set project'
 alias ginfo='gcloud config list'
 alias gkctx='gcloud container clusters get-credentials'
 
-# Terraform aliases
+# === TERRAFORM ===
 alias bg='../../tools/break-glass.sh terraform'
+
+# === UTILITY ALIASES ===
+# Show directory sizes
+alias dsize='du -sh * | sort -hr'
+
+# Quick file editing
+alias bashrc='$EDITOR ~/.bashrc'
+alias aliases='$EDITOR ~/.aliases'
+alias profile='$EDITOR ~/.profile'
+
+# Process management
+alias psg='ps aux | grep'
+alias killall='killall -v'
+
+# Network
+alias myip='curl -s ifconfig.me && echo'
+alias localip='hostname -I'

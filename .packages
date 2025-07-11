@@ -1,0 +1,63 @@
+# Package list for dotfiles installation
+# Format: One package per line, use # for comments
+# Lines starting with # are ignored
+# Empty lines are ignored
+#
+# NOTE: Many of these packages have smart aliases in .aliases that provide
+# better alternatives to standard commands (ls→exa, cat→bat, grep→ripgrep, etc.)
+# with automatic fallbacks if the modern tools aren't installed.
+
+# === CORE PACKAGES (required) ===
+bash
+bash-completion
+curl
+git
+nano
+
+# === ESSENTIAL UTILITIES ===
+unzip
+wget
+tree
+htop
+
+# === IMPROVED COMMAND LINE TOOLS ===
+# Better search and file tools
+ripgrep          # rg - much faster grep alternative
+fd-find          # fdfind - better find command
+fzf              # fuzzy finder for files/history/commands
+
+# Better file viewing
+bat              # better cat with syntax highlighting
+less             # pager (usually pre-installed)
+
+# Better ls alternatives
+exa              # modern ls replacement with colors/icons
+
+# === DEVELOPMENT TOOLS ===
+tldr             # simplified man pages
+jq               # JSON processor
+git-delta        # better git diff viewer
+
+# === SYSTEM INFO & MONITORING ===
+# neofetch         # system info display
+# duf              # better df (disk usage)
+# ncdu             # disk usage analyzer
+
+# === PRODUCTIVITY TOOLS ===
+#tmux             # terminal multiplexer
+#vim              # advanced text editor
+
+# === OPTIONAL TOOLS (uncomment if needed) ===
+# zoxide           # smarter cd command
+thefuck          # corrects previous console commands
+# micro            # simple terminal text editor
+# ranger           # file manager
+# mc               # midnight commander file manager
+
+# === NETWORK TOOLS ===
+# nmap             # network discovery
+# httpie           # better curl for APIs
+# speedtest-cli    # internet speed test
+
+# Add your custom packages below:
+# your-package-name 
