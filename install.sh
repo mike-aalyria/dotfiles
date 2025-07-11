@@ -17,12 +17,17 @@ read_packages() {
     
     if [ -f "$packages_file" ]; then
         while IFS= read -r line || [ -n "$line" ]; do
-            # Skip comments and empty lines
+            # Skip lines that start with # or are empty
             [[ "$line" =~ ^[[:space:]]*# ]] && continue
             [[ -z "${line// }" ]] && continue
             
-            # Add package to array
-            packages+=("$line")
+            # Extract package name (everything before # comment)
+            package=$(echo "$line" | sed 's/#.*//' | xargs)
+            
+            # Skip if package name is empty after removing comments
+            [[ -z "$package" ]] && continue
+            
+            packages+=("$package")
         done < "$packages_file"
     fi
     
@@ -54,10 +59,10 @@ install_packages() {
                     if sudo apt-get install -y "$pkg" 2>/dev/null; then
                         echo "✅ $pkg installed successfully"
                     else
-                        echo "❌ Failed to install $pkg"
+                        echo "⚠️ $pkg not available in repositories (skipped)"
                     fi
                 else
-                    echo "✅ $pkg already installed"
+                    echo "⏭️ $pkg already installed (skipped)"
                 fi
             done
         else

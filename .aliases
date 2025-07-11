@@ -4,50 +4,26 @@
 alias reload='source ~/.bashrc'
 alias path='echo $PATH | tr ":" "\n" | sed "s/^/- /"'
 
-# === IMPROVED COMMAND REPLACEMENTS ===
-# Modern ls with exa (fallback to ls if exa not available)
-if command -v exa >/dev/null 2>&1; then
-    alias ls='exa --color=auto --group-directories-first'
-    alias ll='exa -alF --group-directories-first'
-    alias la='exa -a --group-directories-first'
-    alias l='exa -F --group-directories-first'
-    alias lsa='exa -lah --group-directories-first'
-    alias lt='exa -l --sort=modified --group-directories-first'
-    alias tree='exa --tree'
-else
-    alias ls='ls --color=auto'
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
-    alias lsa='ls -lah'
-    alias lt='ls -ltr'
-fi
+# === MODERN COMMAND REPLACEMENTS ===
+# Enhanced ls with exa
+alias ls='exa --color=auto --group-directories-first'
+alias la='exa -lah --group-directories-first'
+alias tree='exa --tree'
 
-# Better cat with bat (fallback to cat)
-if command -v bat >/dev/null 2>&1; then
-    alias cat='bat --paging=never'
-    alias less='bat'
-    alias more='bat'
-fi
+# Enhanced cat with bat (installed as batcat on Debian/Ubuntu)
+alias cat='batcat --paging=never'
+alias less='batcat'
+alias more='batcat'
 
-# Better grep with ripgrep (keep original grep available)
-if command -v rg >/dev/null 2>&1; then
-    alias rg='rg --color=auto'
-    alias grep='rg --color=auto'
-fi
+# Enhanced grep with ripgrep
+alias rg='rg --color=auto'
+alias grep='rg --color=auto'
+alias fgrep='rg --color=auto'
+alias egrep='rg --color=auto'
 
-# Better find with fd (keep original find available)
-if command -v fdfind >/dev/null 2>&1; then
-    alias fd='fdfind'
-    alias find='fdfind'
-elif command -v fd >/dev/null 2>&1; then
-    alias find='fd'
-fi
-
-# === ENHANCED COMMANDS ===
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+# Enhanced find with fd
+alias fd='fdfind'
+alias find='fdfind'
 
 # === NAVIGATION ===
 alias ..='cd ..'
@@ -74,16 +50,14 @@ alias du='du -h'
 alias free='free -h'
 alias ports='netstat -tulanp'
 
-# === FUZZY FINDER (if available) ===
-if command -v fzf >/dev/null 2>&1; then
-    # Fuzzy find files and edit
-    alias fzf-edit='$EDITOR $(fzf)'
-    alias fe='$EDITOR $(fzf)'
-    
-    # Fuzzy find in history
-    alias fzf-history='history | fzf'
-    alias fh='history | fzf'
-fi
+# === FUZZY FINDER ===
+# Fuzzy find files and edit
+alias fzf-edit='$EDITOR $(fzf)'
+alias fe='$EDITOR $(fzf)'
+
+# Fuzzy find in history
+alias fzf-history='history | fzf'
+alias fh='history | fzf'
 
 # === GIT ===
 alias g='git'

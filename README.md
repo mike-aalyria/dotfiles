@@ -21,7 +21,7 @@ cd ~/.dotfiles
 
 **Core Setup:**
 - **Bash** as primary shell with advanced configuration
-- **Modern command-line tools** with smart fallbacks
+- **Modern command-line tools** that replace standard commands
 - **Centralized alias management** in `.aliases`
 - **Centralized PATH management** in `.paths`
 - **Centralized package management** in `.packages`
@@ -30,8 +30,8 @@ cd ~/.dotfiles
 **Enhanced Features:**
 - Advanced history management (100k entries with timestamps)
 - Colorized prompt with git branch info
-- Modern alternatives to standard commands (`exa`, `bat`, `ripgrep`, `fzf`)
-- Smart aliases that fallback to standard tools if modern ones aren't available
+- Modern alternatives to standard commands (`exa`, `batcat`, `ripgrep`, `fzf`)
+- Direct aliases that use enhanced tools (requires packages to be installed)
 - Comprehensive aliases for git, system, and development
 - Robust PATH management for custom tools
 - Configurable package installation for Debian/Ubuntu systems
@@ -42,7 +42,7 @@ cd ~/.dotfiles
 ~/.dotfiles/
 ├── .bashrc          → Primary shell configuration
 ├── .profile         → Login shell environment (PATH, locale)
-├── .aliases         → All shell aliases with modern tool integration
+├── .aliases         → Modern tool aliases (requires packages)
 ├── .paths           → Custom directories for PATH
 ├── .packages        → System packages to install
 ├── install.sh       → Installation and symlink script
@@ -56,25 +56,27 @@ cd ~/.dotfiles
 |------|---------|----------------|
 | `~/.profile` | Environment variables, PATH setup, locale | Login shells |
 | `~/.bashrc` | Interactive shell config, prompt, history | Interactive shells |
-| `~/.aliases` | Smart aliases with modern tool fallbacks | Sourced by .bashrc |
+| `~/.aliases` | Modern tool aliases (requires packages) | Sourced by .bashrc |
 | `~/.paths` | Custom PATH directories | Processed by .profile |
 | `~/.packages` | System packages to install | Read by install.sh |
 
 ## ⚙️ Key Features
 
 ### **Modern Command Replacements**
-Smart aliases that use modern tools when available, with automatic fallbacks:
+Direct aliases that use modern tools:
 
-| Standard Command | Modern Alternative | What You Get |
-|------------------|-------------------|-------------|
+| Standard Command | Modern Tool | What You Get |
+|------------------|-------------|--------------|
 | `ls` | `exa` | Colors, icons, directory grouping |
-| `cat` | `bat` | Syntax highlighting, line numbers |
+| `cat` | `batcat` | Syntax highlighting, line numbers |
 | `grep` | `ripgrep` | Much faster searching |
 | `find` | `fd` | Simpler syntax, faster results |
 | `tree` | `exa --tree` | Better formatting |
 
+**Note:** These aliases require the modern tools to be installed. Run `./install.sh` to install all required packages.
+
 ### **Package Management**
-Customize installed packages by editing `~/.packages`:
+Required packages are defined in `.packages`:
 ```bash
 # === IMPROVED COMMAND LINE TOOLS ===
 ripgrep          # rg - much faster grep alternative
@@ -86,7 +88,6 @@ exa              # modern ls replacement with colors/icons
 # === DEVELOPMENT TOOLS ===
 tldr             # simplified man pages
 jq               # JSON processor
-git-delta        # better git diff viewer
 ```
 
 ### **PATH Management**
@@ -97,20 +98,26 @@ $HOME/my-tools
 $HOME/.local/bin/custom
 ```
 
-### **Smart Aliases**
+### **Aliases**
 Comprehensive aliases organized by category:
 
 **Navigation & Files:**
 - `..`, `...`, `....` - Navigate up directories
-- `ll`, `la`, `l` - Directory listings (uses `exa` if available)
+- `ll`, `la`, `l` - Directory listings with `exa`
 - `dsize` - Show directory sizes sorted by size
+- `tree` - Directory tree with `exa`
+
+**Enhanced Commands:**
+- `cat`, `less`, `more` - File viewing with `batcat`
+- `grep`, `fgrep`, `egrep` - Searching with `ripgrep`
+- `find` - File finding with `fd`
 
 **Git Workflow:**
 - `gs`, `ga`, `gc`, `gp`, `gl` - Git status, add, commit, push, pull
 - `glog` - Beautiful git log with graph
 
 **Development:**
-- `fe` - Fuzzy find and edit files (requires `fzf`)
+- `fe` - Fuzzy find and edit files
 - `fh` - Fuzzy search command history
 - `bashrc`, `aliases`, `profile` - Quick edit config files
 
@@ -123,10 +130,9 @@ Comprehensive aliases organized by category:
 - Git branch shown in prompt
 - Comprehensive git aliases
 - Colored output
-- Optional `git-delta` for better diffs
 
 ### **Fuzzy Finding**
-When `fzf` is installed, you get powerful fuzzy finding:
+Powerful fuzzy finding with `fzf`:
 ```bash
 fe           # Fuzzy find and edit files
 fh           # Fuzzy search command history
@@ -136,7 +142,7 @@ fh           # Fuzzy search command history
 
 - **Linux** (Debian/Ubuntu tested)
 - **Bash** 4.0+
-- **Git** (installed automatically)
+- **Modern CLI tools** (installed automatically via `.packages`)
 
 ## 🔄 Scripts Explained
 
@@ -199,7 +205,7 @@ git pull
 
 ## 🎨 Command Examples
 
-After installation, familiar commands are enhanced:
+After installation, commands use modern tools:
 
 ```bash
 # Enhanced file listing
@@ -215,7 +221,7 @@ less file.txt   # Paged viewing with bat
 grep "term" *   # Uses ripgrep for speed
 find . -name "*.txt"  # Uses fd for better syntax
 
-# Fuzzy finding (if fzf installed)
+# Fuzzy finding
 fe              # Fuzzy find and edit files
 fh              # Fuzzy search command history
 
@@ -225,13 +231,12 @@ myip            # Your external IP
 psg firefox     # Search for firefox processes
 ```
 
-## 💡 Smart Fallbacks
+## ⚠️ Important Notes
 
-All modern tools have smart fallbacks:
-- If `exa` isn't installed, `ls` uses standard `ls`
-- If `bat` isn't installed, `cat` uses standard `cat`
-- If `ripgrep` isn't installed, `grep` uses standard `grep`
-- This ensures your dotfiles work on any system!
+- **Modern tools required**: Aliases expect `exa`, `batcat`, `ripgrep`, `fzf`, and `fd-find` to be installed
+- **Run `./install.sh`** to install all required packages
+- **No fallbacks**: If packages are missing, commands may fail until installed
+- This ensures consistent behavior and maximum performance
 
 ## 🛡️ License
 

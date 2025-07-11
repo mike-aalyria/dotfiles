@@ -36,7 +36,6 @@ exa              # modern ls replacement with colors/icons
 # === DEVELOPMENT TOOLS ===
 tldr             # simplified man pages
 jq               # JSON processor
-git-delta        # better git diff viewer
 
 # === SYSTEM INFO & MONITORING ===
 # neofetch         # system info display
@@ -48,6 +47,7 @@ git-delta        # better git diff viewer
 #vim              # advanced text editor
 
 # === OPTIONAL TOOLS (uncomment if needed) ===
+# git-delta        # better git diff viewer (not in standard repos)
 # zoxide           # smarter cd command
 thefuck          # corrects previous console commands
 # micro            # simple terminal text editor
