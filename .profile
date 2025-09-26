@@ -5,10 +5,6 @@ if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
 fi
 
-# Set locale
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
 # Function to add directory to PATH if it exists and isn't already there
 add_to_path() {
     local new_path="$1"

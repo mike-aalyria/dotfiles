@@ -6,24 +6,16 @@ alias path='echo $PATH | tr ":" "\n" | sed "s/^/- /"'
 
 # === MODERN COMMAND REPLACEMENTS ===
 # Enhanced ls with exa
-alias ls='exa --color=auto --group-directories-first'
-alias la='exa -lah --group-directories-first'
-alias tree='exa --tree'
+if command -v exa >/dev/null 2>&1; then
+    alias ls='exa --color=auto --group-directories-first'
+    alias la='exa -lah --group-directories-first'
+    alias tree='exa --tree'
+else
+    alias ls='ls --color=auto'
+    alias la='ls -lah'
+    alias tree='tree'
+fi
 
-# Enhanced cat with bat (installed as batcat on Debian/Ubuntu)
-alias cat='batcat --paging=never'
-alias less='batcat'
-alias more='batcat'
-
-# Enhanced grep with ripgrep
-alias rg='rg --color=auto'
-alias grep='rg --color=auto'
-alias fgrep='rg --color=auto'
-alias egrep='rg --color=auto'
-
-# Enhanced find with fd
-alias fd='fdfind'
-alias find='fdfind'
 
 # === NAVIGATION ===
 alias ..='cd ..'

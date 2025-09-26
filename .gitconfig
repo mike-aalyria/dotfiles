@@ -1,5 +1,3 @@
-[credential]
-	helper = store
 [user]
 	email = mike@aalyria.com
 	name = Mike Campanaro
@@ -76,4 +74,5 @@
 		git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | \
 		grep '\\[gone\\]' | cut -d' ' -f1 | xargs -r git branch -d; \
 	}; f"
-
+[credential]
+	helper = store

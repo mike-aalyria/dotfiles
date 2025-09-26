@@ -21,7 +21,7 @@ cd ~/.dotfiles
 
 **Core Setup:**
 - **Bash** as primary shell with advanced configuration
-- **Modern command-line tools** that replace standard commands
+- **Modern command-line tools** with automatic fallbacks to standard commands
 - **Centralized alias management** in `.aliases`
 - **Centralized PATH management** in `.paths`
 - **Centralized package management** in `.packages`
@@ -31,7 +31,7 @@ cd ~/.dotfiles
 - Advanced history management (100k entries with timestamps)
 - Colorized prompt with git branch info
 - Modern alternatives to standard commands (`exa`, `batcat`, `ripgrep`, `fzf`)
-- Direct aliases that use enhanced tools (requires packages to be installed)
+- Smart aliases that use enhanced tools when available, fall back to standard tools
 - Comprehensive aliases for git, system, and development
 - Robust PATH management for custom tools
 - Configurable package installation for Debian/Ubuntu systems
@@ -56,24 +56,24 @@ cd ~/.dotfiles
 |------|---------|----------------|
 | `~/.profile` | Environment variables, PATH setup, locale | Login shells |
 | `~/.bashrc` | Interactive shell config, prompt, history | Interactive shells |
-| `~/.aliases` | Modern tool aliases (requires packages) | Sourced by .bashrc |
+| `~/.aliases` | Smart aliases with automatic fallbacks | Sourced by .bashrc |
 | `~/.paths` | Custom PATH directories | Processed by .profile |
 | `~/.packages` | System packages to install | Read by install.sh |
 
 ## ⚙️ Key Features
 
 ### **Modern Command Replacements**
-Direct aliases that use modern tools:
+Smart aliases that prefer modern tools but fall back gracefully:
 
 | Standard Command | Modern Tool | What You Get |
 |------------------|-------------|--------------|
 | `ls` | `exa` | Colors, icons, directory grouping |
 | `cat` | `batcat` | Syntax highlighting, line numbers |
 | `grep` | `ripgrep` | Much faster searching |
-| `find` | `fd` | Simpler syntax, faster results |
+| `fd` | `fdfind` | Simpler syntax, faster results (find unchanged for compatibility) |
 | `tree` | `exa --tree` | Better formatting |
 
-**Note:** These aliases require the modern tools to be installed. Run `./install.sh` to install all required packages.
+**Note:** These aliases automatically detect and use modern tools when available. If tools aren't installed, they fall back to standard commands. Run `./install.sh` to install modern tools for the best experience.
 
 ### **Package Management**
 Required packages are defined in `.packages`:
@@ -108,9 +108,10 @@ Comprehensive aliases organized by category:
 - `tree` - Directory tree with `exa`
 
 **Enhanced Commands:**
-- `cat`, `less`, `more` - File viewing with `batcat`
-- `grep`, `fgrep`, `egrep` - Searching with `ripgrep`
-- `find` - File finding with `fd`
+- `cat`, `less`, `more` - File viewing with `batcat` (fallback to standard)
+- `grep` - Searching with `ripgrep` (fallback to grep)
+- `fgrep`, `egrep` - Preserved standard semantics
+- `fd` - Modern file finding (find unchanged for script compatibility)
 
 **Git Workflow:**
 - `gs`, `ga`, `gc`, `gp`, `gl` - Git status, add, commit, push, pull
@@ -218,8 +219,8 @@ cat file.txt    # Syntax highlighting with bat
 less file.txt   # Paged viewing with bat
 
 # Faster searching
-grep "term" *   # Uses ripgrep for speed
-find . -name "*.txt"  # Uses fd for better syntax
+grep "term" *   # Uses ripgrep if available, otherwise standard grep
+fd "*.txt"      # Uses fd/fdfind for better syntax (find still works normally)
 
 # Fuzzy finding
 fe              # Fuzzy find and edit files
@@ -233,10 +234,10 @@ psg firefox     # Search for firefox processes
 
 ## ⚠️ Important Notes
 
-- **Modern tools required**: Aliases expect `exa`, `batcat`, `ripgrep`, `fzf`, and `fd-find` to be installed
-- **Run `./install.sh`** to install all required packages
-- **No fallbacks**: If packages are missing, commands may fail until installed
-- This ensures consistent behavior and maximum performance
+- **Smart fallbacks**: Aliases automatically use modern tools when available, standard tools otherwise
+- **Script compatibility**: Standard commands like `find`, `cat`, `grep` work normally in scripts
+- **Best experience**: Run `./install.sh` to install modern tools for enhanced features
+- **Editor preference**: VSCode preferred if available, nano as fallback
 
 ## 🛡️ License
 

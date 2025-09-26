@@ -21,8 +21,13 @@ shopt -s checkwinsize
 shopt -s cmdhist
 
 # Environment
-export EDITOR='nano'
-export VISUAL='nano'
+if command -v code >/dev/null 2>&1; then
+    export EDITOR='code --wait'
+    export VISUAL='code --wait'
+else
+    export EDITOR='nano'
+    export VISUAL='nano'
+fi
 export LESS='-R -i -M -S -x4'
 export LESSHISTFILE='-'
 
@@ -61,3 +66,8 @@ fi
 
 # Source local customizations
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
+
+#Custom tool functions
+storectl() {
+  (cd ~/aalyria/minkowski && bazel run //experimental/users/ciaran/storectl -- "$@")
+}
